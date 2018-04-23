@@ -46,7 +46,3 @@ def remove_duplicates(path, outfile):
     clean_parsed['features'] = clean_features
 
     save_data(outfile, clean_parsed)
-
-
-remove_duplicates('/home/adrian/Pobrane/admin_level_8.json',
-                  '/home/adrian/Dokumenty/admin_level_8.json')
