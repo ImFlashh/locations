@@ -7,9 +7,9 @@ def load_data(path):
     return parsed
 
 
-def save_data(outfile, clean_parsed):
+def save_data(outfile, clean_data):
     with open(outfile, 'w+', encoding='utf-8') as outfile:
-        json.dump(clean_parsed, outfile, ensure_ascii=False)
+        json.dump(clean_data, outfile, ensure_ascii=False)
 
 
 def parse_feautre(feature):
@@ -19,7 +19,7 @@ def parse_feautre(feature):
     new_coors = []
 
     for coor in coordinates:
-        str_coor = ','.join(map(str, coor))
+        str_coor = ', '.join(map(str, coor))
         if str_coor in coors_counter:
             if coors_counter[str_coor] < 2:
                 new_coors.append(coor)
@@ -33,16 +33,27 @@ def parse_feautre(feature):
     return feature
 
 
-def remove_duplicates(path, outfile):
-    parsed = load_data(path)
+def remove_duplicates(json_data):
 
     clean_features = []
 
-    for feature in parsed['features']:
+    for feature in json_data['features']:
         clean_feature = parse_feautre(feature)
         clean_features.append(clean_feature)
 
-    clean_parsed = parsed
+    clean_parsed = json_data
     clean_parsed['features'] = clean_features
 
-    save_data(outfile, clean_parsed)
+    return clean_parsed
+
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile', help='path to directory with data')
+    parser.add_argument('outfile', help='path to directory with outfile')
+    args = parser.parse_args()
+    json_data = load_data(args.infile)
+    cleaned_data = remove_duplicates(json_data)
+    save_data(args.outfile, cleaned_data)
