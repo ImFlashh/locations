@@ -1,3 +1,8 @@
+""" 
+usage from command line:
+python remove_duplicates.py path_to_infile path_to_outfile 
+"""
+
 import json
 
 
