@@ -19,21 +19,19 @@ def save_data(outfile, clean_data):
 
 def parse_feautre(feature):
     coordinates = feature['geometry']['coordinates']
+    flatten_coordinates = list(itertools.chain(*coordinates))
 
-    coors_counter = {}
+    first, coors = flatten_coordinates[0], flatten_coordinates[1:-1]
+
     new_coors = []
 
-    for coor in coordinates:
-        str_coor = ', '.join(map(str, coor))
-        if str_coor in coors_counter:
-            if coors_counter[str_coor] < 2:
-                new_coors.append(coor)
-            coors_counter[str_coor] += 1
-        else:
-            coors_counter[str_coor] = 1
-            new_coors.append(coor)
+    for element in coors:
+        if element not in [first]:
+            if element not in new_coors:
+                new_coors.append(element)
 
-    feature['geometry']['coordinates'] = new_coors
+    cleaned_coors = [[first] + new_coors + [first]]
+    feature['geometry']['coordinates'] = cleaned_coors
 
     return feature
 
