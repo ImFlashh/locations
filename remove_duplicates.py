@@ -1,6 +1,6 @@
 """ 
 usage from command line:
-python remove_duplicates.py path_to_infile path_to_outfile 
+python remove_duplicates.py path/to/infile path/to/outfile 
 """
 
 import json
@@ -29,7 +29,8 @@ def parse_feautre(feature):
         if element not in [first]:
             if element not in new_coors:
                 new_coors.append(element)
-
+    
+    # first and last coordinat must be the same
     cleaned_coors = [[first] + new_coors + [first]]
     feature['geometry']['coordinates'] = cleaned_coors
 
